@@ -1,0 +1,13 @@
+<div style="max-width:640px;margin:auto;padding:16px">
+  <h2>Sistema de Notificações</h2>
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <input type="text" [(ngModel)]="conteudoMensagem" placeholder="Digite a mensagem..." style="flex:1;padding:8px">
+    <button (click)="enviar()">Enviar Notificação</button>
+  </div>
+
+  <ul>
+    <li *ngFor="let n of notificacoes">
+      <code>{{ n.mensagemId }}</code> — <strong>{{ n.status }}</strong> — {{ n.conteudoMensagem }}
+    </li>
+  </ul>
+</div>
