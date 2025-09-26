@@ -1,0 +1,27 @@
+<div class="page">
+  <h2>Sistema de Notificações</h2>
+
+  <div class="form">
+    <input type="text" [(ngModel)]="conteudoMensagem" placeholder="Digite a mensagem..." />
+    <button (click)="enviar()">Enviar Notificação</button>
+  </div>
+
+  <ul class="list">
+    <li class="item" *ngFor="let n of notificacoes">
+      <code>{{ n.mensagemId }}</code>
+
+      <span
+        class="badge"
+        [ngClass]="{
+          aguardando: n.status === 'AGUARDANDO_PROCESSAMENTO',
+          sucesso:    n.status === 'PROCESSADO_SUCESSO',
+          falha:      n.status === 'FALHA_PROCESSAMENTO'
+        }"
+      >
+        {{ n.status }}
+      </span>
+
+      <span>— {{ n.conteudoMensagem }}</span>
+    </li>
+  </ul>
+</div>

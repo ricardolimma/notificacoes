@@ -1,4 +1,5 @@
 import 'dotenv/config';
+console.log('Using AMQP_URL:', process.env.AMQP_URL);
 
 export const AMQP_URL = process.env.AMQP_URL;
 export const QUEUE_SUFFIX = process.env.QUEUE_SUFFIX || 'ricardo';
