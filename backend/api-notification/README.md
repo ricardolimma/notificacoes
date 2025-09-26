@@ -1,26 +1,50 @@
-# Backend Express + RabbitMQ (adequado ao teste)
 
-Implements:
-- `POST /api/notificar` → valida payload `{ mensagemId (uuid), conteudoMensagem (string) }`, publica em `fila.notificacao.entrada.<QUEUE_SUFFIX>` e retorna **202** com o `mensagemId`.
-- **Consumer** → lê da fila de entrada, simula 1–2s, gera **20%** de falha, atualiza cache em memória e publica status em `fila.notificacao.status.<QUEUE_SUFFIX>`.
-- `GET /api/notificacao/status/:mensagemId` → retorna `{ mensagemId, status }` do cache.
+# API Notification Backend
 
-## Rodar
-```bash
-cp .env.example .env
-npm i
-npm run dev
-# POST com curl:
-curl -X POST http://localhost:3000/api/notificar \
-  -H "Content-Type: application/json" \
-  -d '{"mensagemId":"a6f5f6d5-1111-4c2a-9d3a-7f6b4e0a1111","conteudoMensagem":"Olá"}'
-# GET status:
-curl http://localhost:3000/api/notificacao/status/a6f5f6d5-1111-4c2a-9d3a-7f6b4e0a1111
+Este projeto é o backend do sistema de notificações, desenvolvido em Node.js com Express e RabbitMQ.
+
+## Estrutura
+- `src/app.js` — Inicialização da aplicação Express
+- `src/server.js` — Inicialização do servidor
+- `src/amqp.js` — Configuração do RabbitMQ
+- `src/publisher.js` — Publicação de mensagens
+- `src/consumer.js` — Consumo de mensagens
+- `src/statusStore.js` — Armazenamento de status das notificações
+- `test/publisher.test.js` — Testes do publisher
+
+## Instalação
+
+1. Instale as dependências:
+	```powershell
+	npm install
+	```
+
+2. Configure o RabbitMQ:
+	- Certifique-se de que o RabbitMQ está rodando localmente na porta padrão 5672.
+	- Altere as configurações em `.env` se necessário.
+
+3. Execute o servidor:
+	```powershell
+	npm run dev
+	```
+	O backend estará disponível em: http://localhost:3000
+
+## Testes
+
+Para rodar os testes:
+```powershell
+npm test
 ```
 
-## Notas
-- Ajuste `QUEUE_SUFFIX` no `.env` (ex.: `ricardo`). As filas ficam:
-  - `fila.notificacao.entrada.<suffix>`
-  - `fila.notificacao.status.<suffix>`
-- Cache em memória (Map) reinicia a cada start (ok para o teste).
-- Teste unitário mocka `amqplib` para checar `sendToQueue` com os argumentos corretos.
+## Comunicação
+A API recebe notificações via POST em:
+```
+http://localhost:3000/api/notificar
+```
+
+## Variáveis de Ambiente
+Consulte o arquivo `.env.example` para configurar as variáveis necessárias.
+
+---
+
+Para dúvidas ou sugestões, entre em contato com o responsável pelo projeto.
