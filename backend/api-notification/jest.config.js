@@ -1,4 +1,8 @@
+
 export default {
   testEnvironment: "node",
-  transform: {}
+  testMatch: ["**/?(*.)+(spec|test).mjs"],
+  transform: {},
+  moduleNameMapper: {},
+  globals: {},
 };

@@ -36,11 +36,23 @@ Para rodar os testes:
 npm test
 ```
 
-## Comunicação
-A API recebe notificações via POST em:
-```
-http://localhost:3000/api/notificar
-```
+
+## Endpoints REST
+
+- `POST /api/notificar`
+	- Envia uma nova notificação para processamento.
+	- Body: `{ conteudoMensagem: string, mensagemId?: string }`
+	- Resposta: `{ mensagemId: string, status: 'AGUARDANDO_PROCESSAMENTO' }`
+
+- `GET /api/notificacao/status/:mensagemId`
+	- Consulta o status da notificação.
+	- Resposta: `{ mensagemId: string, status: string }` ou 404 se não encontrado.
+
+## Fluxo de Mensagens
+1. O frontend envia uma requisição para `POST /api/notificar`.
+2. O backend publica a mensagem na fila RabbitMQ.
+3. O consumidor processa a mensagem de forma assíncrona e atualiza o status em memória.
+4. O frontend consulta o status via `GET /api/notificacao/status/:mensagemId` (polling).
 
 ## Variáveis de Ambiente
 Consulte o arquivo `.env.example` para configurar as variáveis necessárias.
